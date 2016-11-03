@@ -1,12 +1,25 @@
 #!/bin/bash
 
+# Chandler 200327666
+
 function usage {
-  echo "Usage: $0 [-h]"
+  echo "Usage of: $0 [-he] Please enter a minute value in the script to start the countdown."
 }
 
 function error-message {
   echo "$@" >&2
 }
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+-he | --help )
+        usage
+        exit 0
+        ;;
+        
+esac
+shift
+done
 
 # get input from user
 read -p "In minutes, what would you like to set the timer to?" -e TIMER
