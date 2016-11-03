@@ -1,1 +1,128 @@
-This is my file I made, changed
+Command Line
+
+#! - hashbang, used to create the beginning of the script, identifies script as a script 
+
+# - comment, often used to describe what this part of the script does, is not ran by the script
+
+Command Lists - 
+	;  - Permits putting two or more commands on the same line, execute in order no dependance
+	;; - 
+	& - Run the job in background
+	&& - Allows you to do something based on whether or not the previous command was completed successfully 
+	|| - Allows you do do another command if the previous one had failed
+
+$ - Retrieve variable with the variable name after $
+! - Substitute the most recent command/history
+Alias - Create a shorter command to do a large command, example can be ls (alias rm="rm -i”)
+“ - Preserves the literal value of all characters within there, exceptions of $ ` / !
+() - Used to create a sub shell, allows you to perform operations without affecting the current shell environment
+$() - Command substitution 
+$(()) - Syntax for arithmetic expansion
+
+Expressions
+String vs numeric - numeric i=$(( i + 1 )) string if [ "$a" = "$b" ]
+Unary and binary tests -***
+
+Commands to search for text
+grep - grep -rl "string" /path
+cut - cut -d : -f 1 /etc/passwd
+sed - sed -n 'cdzula' README.md  
+awk - $ awk -F":" '{ print $3 " " $1 }' /etc/passwd
+	 $ awk '/X11Forwarding/, /^$/' /etc/ssh/sshd_config 
+
+Locate files
+find - find bash (if in current directory)
+ls - ls -R bash
+
+Job control, foreground and background
+^Z - Control-Z suspends the most recent foreground process (the last process to interact with the tty) 
+jobs - Alternate way of listing your own process, -l -p
+fg - Places a process in the foreground, alongside jobs to get ID %
+bg - Places a process in the background, alongside jobs to get ID %
+
+Sorting data
+sort - sort data.txt > new.txt to create new file, can be used alongside ls, sorts alphabetically and numerally, can be piped
+uniq - sort -u names-list.txt  removes duplicate lines
+
+ls - list
+du - disk usage du -sh (summarize) (human reading)
+ps - snapshot of current processes
+
+I/O and Signals
+> - is greater than 
+>> - command output, redirect stdout to a file
+< - less than
+<< - command output, redirect stdout to a file?
+<& - redirect stdout and stderr of cmd to file
+>>& -
+#> -
+#>&# -
+| - pipe to next command
+
+STDIN -  this is the file handle that your process reads to get information from you.
+STDOUT - your process writes normal information to this file handle.
+STDERR - your process writes error information here.
+File Descriptors 
+0 - STDIN
+1 - STDOUT
+2 - STDERR
+User input and prompting
+echo "Do you wish to install this program?"
+select yn in "Yes" "No"; 
+do    
+case $yn in        
+Yes ) make install; break;;        
+No ) exit;;    
+esacdone
+
+Signals and traps
+kill - terminate process without having to logout or anything (PID)
+trap - ignore signals like ctrl c, cleanup
+
+Variables
+syntax -
+arrays - An array is a variable containing multiple values. 
+hashes - declare -A ${#var}, ${#arr[*]}, ${#arr[@]}
+environment vs local variables 
+Environment - used to configure other commands or programs, inherited by child shells
+Local = shell variable, used for configuring shell itself, storing data, or command output, local to a single shell by default, non inherited by child shells
+PATH - environment variable, tells the shell which directories to search for executable files
+USER - environment variable , get username ?? - create user possibly
+HOME - root directory
+Positional parameters - Arguments passed to the script from the command line [1] : $0, $1, $2, $3 . . .$0 is the name of the script itself, $1 is the first argument, $2 the second, $3 the third, and so forth. [2] After $9, the arguments must be enclosed in brackets, for example, ${10}, ${11}, ${12}.The special variables $* and $@ denote all the positional parameters.
+Exit status - anything other than 0 indicates error, 
+
+Execution Control
+|| - first command succeed the second won’t be executed
+&& - only executed if the first commands returns exit code of 0
+[] - regular comment 
+if then fi - conditionals, if expression THEN statement is only excited when expression is true, to end it
+if [ "foo" = "foo" ]; then               
+	echo expression evaluated as true            
+else               
+	echo expression evaluated as false            
+fi
+
+while do done - if control expression is true, and only stops when it is false
+ #!/bin/bash          
+COUNTER=0         
+while [  $COUNTER -lt 10 ]; do             
+	echo The counter is $COUNTER             
+	let COUNTER=COUNTER+1          
+done
+
+until do done -The until loop is very similar to the while loop, except that the loop executes until the TEST-COMMAND executes successfully. As long as this command fails, the loop continues. The syntax is the same as for the while loop
+for var in list do done - no idea 
+for ((init; test; action)) do done - Initscripts often make use of case statements for starting, stopping and querying system services.
+case var in list do done - Initscripts often make use of case statements for starting, stopping and querying system services.
+functions - function build() {
+   ...
+}
+
+Script Management
+Execution methods - chmod +x ./script.sh
+Storage and permissions - chmod 777 755 700 666 644 600 chown ls -l /bin/bash
+Debugging - bash -x ./script.sh
+Error handling and logging of messages - use trap? set -e ? 
+Sourcing scripts - chmod +x going to be sourced #!/bin/bashm $PATH
+Environment files - ~/.bashrc 		/etc/bashrc
